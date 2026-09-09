@@ -1252,6 +1252,21 @@
     .week-filter-btn.active .flag-svg {
       filter: drop-shadow(0 1px 1px rgba(0,0,0,0.2));
     }
+    .week-filter-btn.btn-reset {
+      background: rgba(244, 63, 94, 0.09);
+      border-color: rgba(244, 63, 94, 0.3);
+      color: #e11d48;
+      font-weight: 700;
+    }
+    .week-filter-btn.btn-reset:hover {
+      background: #f43f5e;
+      border-color: #f43f5e;
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(244, 63, 94, 0.28);
+    }
+    .week-filter-btn.btn-reset:hover i {
+      color: #ffffff !important;
+    }
   </style>
 </head>
 <body>
@@ -1469,8 +1484,8 @@
           </div>
 
           <div class="week-filter-group">
-            <button type="button" class="week-filter-btn" id="wBtnReset" onclick="resetWeekFilters()" title="Réinitialiser les filtres" style="background:#ffffff; border-color:var(--slate-300); color:var(--slate-700);">
-              <i class="fa-solid fa-arrow-rotate-left" style="color:var(--primary);"></i> Réinitialiser
+            <button type="button" class="week-filter-btn btn-reset" id="wBtnReset" onclick="resetWeekFilters()" title="Réinitialiser tous les filtres de la semaine">
+              <i class="fa-solid fa-arrow-rotate-left" style="color:#e11d48;"></i> Réinitialiser
             </button>
           </div>
         </div>
