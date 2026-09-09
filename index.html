@@ -1806,6 +1806,20 @@
       display: block;
     }
 
+    .admin-login-logo {
+      display: none;
+    }
+
+    .admin-login-real-logo {
+      display: block;
+      width: min(330px, 82%);
+      height: auto;
+      max-height: 190px;
+      object-fit: contain;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 12px 26px rgba(17, 24, 39, 0.18));
+    }
+
     #adminLoginOverlay .admin-login-window,
     .admin-login-window {
       display: none !important;
@@ -1882,6 +1896,7 @@
 
       <div class="admin-login-panel admin-login-panel--brand">
         <div class="admin-login-brand-wrap">
+          <img src="assets/success-driving-school.webp" alt="Success Driving School" class="admin-login-real-logo">
           <svg class="admin-login-logo" viewBox="0 0 120 120" aria-label="Success Driving School" role="img" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="sdsLogoGrad" x1="0%" x2="100%" y1="0%" y2="100%">
