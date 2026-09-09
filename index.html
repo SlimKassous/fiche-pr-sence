@@ -4279,9 +4279,14 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
 
     function isAdminLoggedIn() {
       try {
-        return localStorage.getItem(ADMIN_LOGIN_STORAGE_KEY) === '1';
+        return localStorage.getItem(ADMIN_LOGIN_STORAGE_KEY) === '1' ||
+          sessionStorage.getItem(ADMIN_LOGIN_STORAGE_KEY) === '1';
       } catch (e) {
-        return false;
+        try {
+          return sessionStorage.getItem(ADMIN_LOGIN_STORAGE_KEY) === '1';
+        } catch (sessionError) {
+          return false;
+        }
       }
     }
 
@@ -4289,6 +4294,10 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       try {
         if (value) localStorage.setItem(ADMIN_LOGIN_STORAGE_KEY, '1');
         else localStorage.removeItem(ADMIN_LOGIN_STORAGE_KEY);
+      } catch (e) {}
+      try {
+        if (value) sessionStorage.setItem(ADMIN_LOGIN_STORAGE_KEY, '1');
+        else sessionStorage.removeItem(ADMIN_LOGIN_STORAGE_KEY);
       } catch (e) {}
     }
 
