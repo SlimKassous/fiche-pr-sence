@@ -1467,6 +1467,12 @@
               Théorie
             </button>
           </div>
+
+          <div class="week-filter-group">
+            <button type="button" class="week-filter-btn" id="wBtnReset" onclick="resetWeekFilters()" title="Réinitialiser les filtres" style="background:#ffffff; border-color:var(--slate-300); color:var(--slate-700);">
+              <i class="fa-solid fa-arrow-rotate-left" style="color:var(--primary);"></i> Réinitialiser
+            </button>
+          </div>
         </div>
 
         <div class="wp-sessions-grid" id="wpSessionsGrid"></div>
@@ -2180,6 +2186,11 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
         if (el) el.classList.toggle('active', k === type);
       }
       applyWeekFilters();
+    }
+
+    function resetWeekFilters() {
+      setWeekLangFilter('all');
+      setWeekTypeFilter('all');
     }
 
     function showCurrentWeekSessions() {
