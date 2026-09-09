@@ -412,7 +412,34 @@
 
     /* ===== IPHONE / REACT STYLE LANGUAGE SWITCHER (ALIGNED RIGHT AFTER 5 COURSES) ===== */
     .step1-lang-bar-right {
-      display: none !important;
+      display: flex !important;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      margin: 4px 0 20px;
+    }
+
+    .step1-current-week-btn {
+      height: 36px;
+      min-width: 156px;
+      padding: 0 14px;
+      border: 0;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #0f766e 0%, #0e7490 52%, #2563eb 100%);
+      color: #ffffff;
+      box-shadow: 0 6px 16px rgba(14, 116, 144, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .step1-current-week-btn:hover {
+      background: linear-gradient(135deg, #115e59 0%, #155e75 52%, #1d4ed8 100%);
+      box-shadow: 0 8px 20px rgba(14, 116, 144, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.32);
+      transform: translateY(-1px);
+    }
+
+    .step1-language-control.is-hidden {
+      display: none;
     }
 
     .mac-window-controls {
@@ -435,7 +462,8 @@
 
     @media (max-width: 640px) {
       .step1-lang-bar-right {
-        justify-content: center;
+        justify-content: flex-end;
+        flex-wrap: wrap;
         margin: 4px 0 20px 0;
       }
     }
@@ -2050,7 +2078,10 @@
 
       <!-- IPHONE / REACT STYLE DUAL LANGUAGE TOGGLE (ALIGNÉ À DROITE APRÈS LES 5 BOUTONS) -->
       <div class="step1-lang-bar-right">
-        <div class="lang-switcher-container lang-switcher-container--toolbar-modern is-fr">
+        <button type="button" class="btn btn-secondary btn-sm step1-current-week-btn" onclick="showCurrentWeekSessions()">
+          <i class="fa-regular fa-calendar-days"></i> Semaine courante
+        </button>
+        <div class="lang-switcher-container lang-switcher-container--toolbar-modern step1-language-control is-fr">
           <span class="lang-label lang-label--fr" onclick="setLanguage('CH')" title="Passer en Français">FR</span>
           <button
             type="button"
@@ -2860,6 +2891,9 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       isCurrentWeekView = true;
       selectedCourseKey = null;
 
+      var step1LanguageControl = document.querySelector('.step1-language-control');
+      if (step1LanguageControl) step1LanguageControl.classList.add('is-hidden');
+
       // Deselect the 5 top course cards
       document.querySelectorAll('.course-card').forEach(function(c) { c.classList.remove('selected'); });
 
@@ -3141,6 +3175,9 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       selectedCourseKey = key || 'sensi';
       isCurrentWeekView = false;
       var isEn = state.flagCode === "GB";
+
+      var step1LanguageControl = document.querySelector('.step1-language-control');
+      if (step1LanguageControl) step1LanguageControl.classList.remove('is-hidden');
 
       // Hide week filter toolbar when specific course preset is chosen
       var toolbar = document.getElementById('weekFilterToolbar');
