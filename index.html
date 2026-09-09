@@ -4578,6 +4578,9 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     }
 
     const ADMIN_LOGIN_STORAGE_KEY = 'success_ds_presence_login';
+    const ADMIN_LAST_ACTIVITY_KEY = 'success_ds_presence_last_activity';
+    const ADMIN_INACTIVITY_TIMEOUT_MS = 30 * 60 * 1000;
+    const ADMIN_ACTIVITY_CHECK_MS = 60 * 1000;
     const ADMIN_DEMO_CREDENTIALS = { username: 'SlimKassous', password: 'Slim2027' };
 
     function isAdminLoggedIn() {
@@ -4596,12 +4599,44 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     function setAdminLoggedIn(value) {
       try {
         if (value) localStorage.setItem(ADMIN_LOGIN_STORAGE_KEY, '1');
-        else localStorage.removeItem(ADMIN_LOGIN_STORAGE_KEY);
+        else {
+          localStorage.removeItem(ADMIN_LOGIN_STORAGE_KEY);
+          localStorage.removeItem(ADMIN_LAST_ACTIVITY_KEY);
+        }
       } catch (e) {}
       try {
         if (value) sessionStorage.setItem(ADMIN_LOGIN_STORAGE_KEY, '1');
         else sessionStorage.removeItem(ADMIN_LOGIN_STORAGE_KEY);
       } catch (e) {}
+    }
+
+    var lastActivityWriteAt = 0;
+
+    function registerAdminActivity() {
+      if (!isAdminLoggedIn()) return;
+      var now = Date.now();
+      if (now - lastActivityWriteAt < 30000) return;
+      lastActivityWriteAt = now;
+      try {
+        localStorage.setItem(ADMIN_LAST_ACTIVITY_KEY, String(now));
+      } catch (e) {}
+    }
+
+    function checkAdminInactivity() {
+      if (!isAdminLoggedIn()) return;
+      var lastActivity = 0;
+      try {
+        lastActivity = parseInt(localStorage.getItem(ADMIN_LAST_ACTIVITY_KEY), 10) || 0;
+      } catch (e) {}
+
+      if (!lastActivity) {
+        registerAdminActivity();
+        return;
+      }
+
+      if (Date.now() - lastActivity >= ADMIN_INACTIVITY_TIMEOUT_MS) {
+        handleAdminLogout();
+      }
     }
 
     function updateAdminHeaderState() {
@@ -4652,6 +4687,8 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
 
       if (username === ADMIN_DEMO_CREDENTIALS.username && password === ADMIN_DEMO_CREDENTIALS.password) {
         setAdminLoggedIn(true);
+        lastActivityWriteAt = 0;
+        registerAdminActivity();
         hideAdminLogin();
         return;
       }
@@ -4666,10 +4703,16 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       var loginForm = document.getElementById('adminLoginForm');
       if (loginForm) loginForm.addEventListener('submit', handleAdminLoginSubmit);
 
+      ['click', 'keydown', 'pointerdown', 'scroll', 'touchstart'].forEach(function(eventName) {
+        document.addEventListener(eventName, registerAdminActivity, { passive: true });
+      });
+      window.setInterval(checkAdminInactivity, ADMIN_ACTIVITY_CHECK_MS);
+
       updateAdminHeaderState();
       if (!isAdminLoggedIn()) {
         showAdminLogin();
       } else {
+        registerAdminActivity();
         hideAdminLogin();
       }
       finalizeAuthState();
