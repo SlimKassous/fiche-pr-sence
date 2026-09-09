@@ -231,82 +231,155 @@
     .badge-amber { background: rgba(245, 158, 11, 0.14); color: #b45309; border: 1px solid rgba(245, 158, 11, 0.32); }
     .badge-rose { background: rgba(244, 63, 94, 0.14); color: #be123c; border: 1px solid rgba(244, 63, 94, 0.32); }
 
-    /* STEPPER */
+    /* ── STICKY HIGH-TECH LUXURY STEPPER ── */
     .stepper-container {
-      background: rgba(255, 255, 255, 0.88);
-      backdrop-filter: blur(16px);
-      border-bottom: 1.5px solid rgba(147, 51, 234, 0.12);
-      padding: 18px 24px;
-      box-shadow: 0 4px 20px rgba(147, 51, 234, 0.04);
+      position: sticky;
+      top: 80px;
+      z-index: 45;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 2px solid rgba(147, 51, 234, 0.16);
+      padding: 12px 24px;
+      box-shadow: 0 8px 30px -6px rgba(147, 51, 234, 0.08), 0 2px 8px rgba(15, 23, 42, 0.04);
+      transition: all 0.3s ease;
+    }
+    .stepper-track-wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .stepper-progress-bg {
+      position: absolute;
+      top: 24px;
+      left: 60px;
+      right: 60px;
+      height: 4px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .stepper-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #9333ea 0%, #f43f5e 50%, #10b981 100%);
+      border-radius: 4px;
+      transition: width 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 0 12px rgba(147, 51, 234, 0.6);
     }
     .stepper-track {
       display: flex;
       align-items: center;
-      max-width: 780px;
-      margin: 0 auto;
+      justify-content: space-between;
       position: relative;
+      z-index: 2;
     }
     .stepper-step {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      position: relative;
-      cursor: pointer;
-      z-index: 2;
-    }
-    .step-number {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
+      gap: 12px;
       background: #ffffff;
-      color: var(--slate-400);
+      border: 1.5px solid #e2e8f0;
+      padding: 8px 18px 8px 10px;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.04);
+      user-select: none;
+    }
+    .stepper-step:hover {
+      transform: translateY(-2px);
+      border-color: #d8b4fe;
+      box-shadow: 0 6px 20px rgba(147, 51, 234, 0.14);
+    }
+    .step-badge {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      color: #64748b;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      font-size: 15px;
-      transition: all 0.25s ease;
-      border: 2px solid #cbd5e1;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+      font-size: 14px;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+      position: relative;
     }
-    .step-label {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--slate-500);
-      margin-top: 6px;
-      text-align: center;
-      transition: all 0.25s ease;
+    .step-text-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      text-align: left;
     }
-    .stepper-step.active .step-number {
+    .step-main-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--slate-700);
+      letter-spacing: -0.01em;
+      transition: color 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .step-sub-desc {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--slate-400);
+      transition: color 0.2s ease;
+    }
+
+    /* ACTIVE STEP CHOC DESIGN */
+    @keyframes pulseRing {
+      0% { box-shadow: 0 0 0 0 rgba(147, 51, 234, 0.45); }
+      70% { box-shadow: 0 0 0 10px rgba(147, 51, 234, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(147, 51, 234, 0); }
+    }
+    .stepper-step.active {
+      background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%);
+      border-color: var(--primary);
+      box-shadow: 0 8px 24px -4px rgba(147, 51, 234, 0.25), 0 0 0 2px rgba(147, 51, 234, 0.15);
+      transform: translateY(-2px) scale(1.02);
+    }
+    .stepper-step.active .step-badge {
       background: var(--primary-gradient);
       color: #ffffff;
-      border-color: var(--primary);
-      box-shadow: 0 0 16px rgba(147, 51, 234, 0.4);
-      transform: scale(1.06);
+      animation: pulseRing 2s infinite;
     }
-    .stepper-step.active .step-label {
-      color: var(--primary);
-      font-weight: 800;
+    .stepper-step.active .step-main-title {
+      color: var(--primary-dark);
     }
-    .stepper-step.done .step-number {
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      color: #ffffff;
-      border-color: #059669;
-      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
-    }
-    .stepper-step.done .step-label {
-      color: var(--emerald-dark);
+    .stepper-step.active .step-sub-desc {
+      color: #9333ea;
       font-weight: 700;
     }
-    .stepper-line {
-      flex: 1;
-      height: 3px;
-      background: #cbd5e1;
-      margin: 0 10px 18px;
-      border-radius: 3px;
-      transition: background 0.3s;
+
+    /* DONE STEP CHOC DESIGN */
+    @keyframes popCheck {
+      0% { transform: scale(0.6); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
     }
-    .stepper-line.done { background: linear-gradient(90deg, #10b981, #059669); }
+    .stepper-step.done {
+      background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+      border-color: #86efac;
+    }
+    .stepper-step.done .step-badge {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);
+    }
+    .stepper-step.done .step-badge i {
+      animation: popCheck 0.3s ease;
+    }
+    .stepper-step.done .step-main-title {
+      color: #047857;
+    }
+    .stepper-step.done .step-sub-desc {
+      color: #059669;
+    }
 
     /* MAIN CONTAINER */
     .app-container {
@@ -1484,22 +1557,36 @@
     </div>
   </header>
 
-  <!-- STEPPER NAVIGATION -->
+  <!-- STEPPER NAVIGATION (STICKY CHOC DESIGN) -->
   <div class="stepper-container">
-    <div class="stepper-track">
-      <div class="stepper-step active" id="step-indicator-1" onclick="goToStep(1)">
-        <div class="step-number">1</div>
-        <div class="step-label">1. Choix du Cours</div>
+    <div class="stepper-track-wrap">
+      <div class="stepper-progress-bg">
+        <div class="stepper-progress-bar" id="stepperProgressBar" style="width: 0%;"></div>
       </div>
-      <div class="stepper-line" id="step-line-1"></div>
-      <div class="stepper-step" id="step-indicator-2" onclick="goToStep(2)">
-        <div class="step-number">2</div>
-        <div class="step-label">2. Récapitulatif Session</div>
-      </div>
-      <div class="stepper-line" id="step-line-2"></div>
-      <div class="stepper-step" id="step-indicator-3" onclick="goToStep(3)">
-        <div class="step-number">3</div>
-        <div class="step-label">3. Liste des Élèves</div>
+      <div class="stepper-track">
+        <div class="stepper-step active" id="step-indicator-1" onclick="goToStep(1)">
+          <div class="step-badge" id="stepBadge1">1</div>
+          <div class="step-text-group">
+            <span class="step-main-title"><i class="fa-solid fa-graduation-cap" style="color:var(--primary); font-size:12px;"></i> Étape 1 : Choix du Cours</span>
+            <span class="step-sub-desc">Langue &amp; Horaires Session</span>
+          </div>
+        </div>
+
+        <div class="stepper-step" id="step-indicator-2" onclick="goToStep(2)">
+          <div class="step-badge" id="stepBadge2">2</div>
+          <div class="step-text-group">
+            <span class="step-main-title"><i class="fa-solid fa-calendar-check" style="color:#f43f5e; font-size:12px;"></i> Étape 2 : Récapitulatif</span>
+            <span class="step-sub-desc">Moniteur &amp; Dates Session</span>
+          </div>
+        </div>
+
+        <div class="stepper-step" id="step-indicator-3" onclick="goToStep(3)">
+          <div class="step-badge" id="stepBadge3">3</div>
+          <div class="step-text-group">
+            <span class="step-main-title"><i class="fa-solid fa-users" style="color:#10b981; font-size:12px;"></i> Étape 3 : Émargement</span>
+            <span class="step-sub-desc">Élèves &amp; Génération PDF</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -2444,13 +2531,25 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       var panel = document.getElementById('step-panel-' + n);
       if (panel) panel.classList.add('active');
 
+      // Update progress bar percentage smoothly
+      var pBar = document.getElementById('stepperProgressBar');
+      if (pBar) {
+        var pct = (n === 1) ? "0%" : ((n === 2) ? "50%" : "100%");
+        pBar.style.width = pct;
+      }
+
       document.querySelectorAll('.stepper-step').forEach(function(s, i) {
         s.classList.remove('active', 'done');
-        if (i + 1 < n) s.classList.add('done');
-        if (i + 1 === n) s.classList.add('active');
-      });
-      document.querySelectorAll('.stepper-line').forEach(function(l, i) {
-        l.classList.toggle('done', i + 1 < n);
+        var badge = s.querySelector('.step-badge');
+        if (i + 1 < n) {
+          s.classList.add('done');
+          if (badge) badge.innerHTML = '<i class="fa-solid fa-check"></i>';
+        } else if (i + 1 === n) {
+          s.classList.add('active');
+          if (badge) badge.innerText = String(n);
+        } else {
+          if (badge) badge.innerText = String(i + 1);
+        }
       });
 
       // Le bouton Générer PDF du header ne s'affiche qu'à la step finale (Step 3)
