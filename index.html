@@ -389,6 +389,18 @@
       color: #ffffff;
     }
 
+    /* ROTATING BORDER ANIMATION (MATCHING ADMIN AFFECTATION ELEVE) */
+    @keyframes borderSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .card-sensi { --card-grad-1: #c084fc; --card-grad-2: #9333ea; }
+    .card-secours { --card-grad-1: #fb7185; --card-grad-2: #f43f5e; }
+    .card-moto12 { --card-grad-1: #38bdf8; --card-grad-2: #06b6d4; }
+    .card-moto4 { --card-grad-1: #fbbf24; --card-grad-2: #f59e0b; }
+    .card-theorie { --card-grad-1: #34d399; --card-grad-2: #10b981; }
+
     /* COURSE CARDS */
     .course-grid {
       display: grid;
@@ -397,41 +409,61 @@
       margin-bottom: 24px;
     }
     .course-card {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border: 1.5px solid var(--slate-200);
+      position: relative;
+      overflow: hidden;
       border-radius: var(--radius-xl);
-      padding: 20px 18px;
+      padding: 2.5px;
+      background: #e2e8f0;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: var(--shadow-sm);
+    }
+    .course-card::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(from 0deg, transparent 0%, transparent 60%, var(--card-grad-1, #c084fc) 80%, var(--card-grad-2, #9333ea) 100%);
+      animation: borderSpin 4s linear infinite;
+      opacity: 0.65;
+      z-index: 0;
+      transition: opacity 0.3s ease, animation-duration 0.3s ease;
+    }
+    .course-card:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 14px 30px -8px rgba(0, 0, 0, 0.12);
+    }
+    .course-card:hover::before {
+      opacity: 1;
+      animation-duration: 2.5s;
+    }
+    .course-card.selected {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 16px 36px -8px rgba(147, 51, 234, 0.22);
+    }
+    .course-card.selected::before {
+      opacity: 1;
+      animation-duration: 2.2s;
+    }
+    .course-card-inner {
+      position: relative;
+      z-index: 1;
+      background: #ffffff;
+      border-radius: calc(var(--radius-xl) - 2.5px);
+      padding: 18px 16px;
+      height: 100%;
       display: flex;
       flex-direction: column;
       gap: 12px;
-      cursor: pointer;
-      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-      position: relative;
-      overflow: hidden;
+      transition: background 0.3s ease;
     }
-    .course-card::after {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0; height: 3px;
-      background: transparent;
-      transition: background 0.25s ease;
-    }
-    .course-card:hover {
-      border-color: var(--primary);
-      transform: translateY(-4px);
-      box-shadow: 0 12px 30px -8px rgba(147, 51, 234, 0.16), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
-    }
-    .course-card:hover::after {
-      background: var(--primary-gradient);
-    }
-    .course-card.selected {
-      border-color: var(--primary);
+    .course-card.selected .course-card-inner {
       background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%);
-      box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.22), 0 8px 24px -4px rgba(147, 51, 234, 0.2);
-    }
-    .course-card.selected::after {
-      background: var(--primary-gradient);
     }
     .course-icon-wrap {
       width: 44px;
@@ -1368,60 +1400,70 @@
         </div>
       </div>
 
-      <!-- Course Cards Grid with FontAwesome Icons -->
+      <!-- Course Cards Grid with Animated Rotating Contour -->
       <div class="course-grid">
-        <div class="course-card" onclick="selectCoursePreset('sensi', this)">
-          <div class="course-icon-wrap icon-purple">
-            <i class="fa-solid fa-shield-halved"></i>
-          </div>
-          <div class="course-info">
-            <div class="badge badge-purple">8 Heures</div>
-            <div class="course-name" id="cTitleSensi">Sensibilisation</div>
-            <div class="course-detail">2 soirées (17h30-21h30)</div>
-          </div>
-        </div>
-
-        <div class="course-card" onclick="selectCoursePreset('secours', this)">
-          <div class="course-icon-wrap icon-rose">
-            <i class="fa-solid fa-kit-medical"></i>
-          </div>
-          <div class="course-info">
-            <div class="badge badge-rose">10 Heures</div>
-            <div class="course-name" id="cTitleSecours">Premiers Secours</div>
-            <div class="course-detail">Vendredi soir &amp; Samedi</div>
+        <div class="course-card card-sensi" onclick="selectCoursePreset('sensi', this)">
+          <div class="course-card-inner">
+            <div class="course-icon-wrap icon-purple">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <div class="course-info">
+              <div class="badge badge-purple">8 Heures</div>
+              <div class="course-name" id="cTitleSensi">Sensibilisation</div>
+              <div class="course-detail">2 soirées (17h30-21h30)</div>
+            </div>
           </div>
         </div>
 
-        <div class="course-card" onclick="selectCoursePreset('moto12', this)">
-          <div class="course-icon-wrap icon-cyan">
-            <i class="fa-solid fa-motorcycle"></i>
-          </div>
-          <div class="course-info">
-            <div class="badge badge-cyan">12 Heures</div>
-            <div class="course-name" id="cTitleMoto12">Cours Moto 12h</div>
-            <div class="course-detail">3 parties de 4h (EN &amp; FR)</div>
-          </div>
-        </div>
-
-        <div class="course-card" onclick="selectCoursePreset('moto4', this)">
-          <div class="course-icon-wrap icon-amber">
-            <i class="fa-solid fa-motorcycle"></i>
-          </div>
-          <div class="course-info">
-            <div class="badge badge-amber">4 Heures</div>
-            <div class="course-name" id="cTitleMoto4">Cours Moto 4h</div>
-            <div class="course-detail">1 partie de 4h (Samedi)</div>
+        <div class="course-card card-secours" onclick="selectCoursePreset('secours', this)">
+          <div class="course-card-inner">
+            <div class="course-icon-wrap icon-rose">
+              <i class="fa-solid fa-kit-medical"></i>
+            </div>
+            <div class="course-info">
+              <div class="badge badge-rose">10 Heures</div>
+              <div class="course-name" id="cTitleSecours">Premiers Secours</div>
+              <div class="course-detail">Vendredi soir &amp; Samedi</div>
+            </div>
           </div>
         </div>
 
-        <div class="course-card" onclick="selectCoursePreset('theorie', this)">
-          <div class="course-icon-wrap icon-emerald">
-            <i class="fa-solid fa-book-open-reader"></i>
+        <div class="course-card card-moto12" onclick="selectCoursePreset('moto12', this)">
+          <div class="course-card-inner">
+            <div class="course-icon-wrap icon-cyan">
+              <i class="fa-solid fa-motorcycle"></i>
+            </div>
+            <div class="course-info">
+              <div class="badge badge-cyan">12 Heures</div>
+              <div class="course-name" id="cTitleMoto12">Cours Moto 12h</div>
+              <div class="course-detail">3 parties de 4h (EN &amp; FR)</div>
+            </div>
           </div>
-          <div class="course-info">
-            <div class="badge badge-emerald">6 Heures</div>
-            <div class="course-name" id="cTitleTheorie">Cours de Théorie</div>
-            <div class="course-detail">2 soirées de 3h</div>
+        </div>
+
+        <div class="course-card card-moto4" onclick="selectCoursePreset('moto4', this)">
+          <div class="course-card-inner">
+            <div class="course-icon-wrap icon-amber">
+              <i class="fa-solid fa-motorcycle"></i>
+            </div>
+            <div class="course-info">
+              <div class="badge badge-amber">4 Heures</div>
+              <div class="course-name" id="cTitleMoto4">Cours Moto 4h</div>
+              <div class="course-detail">1 partie de 4h (Samedi)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="course-card card-theorie" onclick="selectCoursePreset('theorie', this)">
+          <div class="course-card-inner">
+            <div class="course-icon-wrap icon-emerald">
+              <i class="fa-solid fa-book-open-reader"></i>
+            </div>
+            <div class="course-info">
+              <div class="badge badge-emerald">6 Heures</div>
+              <div class="course-name" id="cTitleTheorie">Cours de Théorie</div>
+              <div class="course-detail">2 soirées de 3h</div>
+            </div>
           </div>
         </div>
       </div>
