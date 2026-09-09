@@ -2770,6 +2770,9 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     function getInstructorAvatarHtml(moniteurName) {
       var name = String(moniteurName || "").trim();
       var nameLower = name.toLowerCase();
+      var isFemale = nameLower.indexOf("imane") !== -1;
+      var instructorLabel = isFemale ? "Monitrice" : "Moniteur";
+      var titleStatus = isFemale ? "Monitrice officielle Success Driving School" : "Moniteur officiel Success Driving School";
 
       var photoB64 = null;
       if (nameLower.indexOf("nabil") !== -1) photoB64 = INSTRUCTOR_PORTRAITS.nabil.b64;
@@ -2799,10 +2802,10 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       return '<div class="instructor-profile-group">' +
         '<div class="instructor-avatar-wrap">' +
           avatarInner +
-          '<span class="instructor-status-dot" title="Moniteur officiel Success Driving School"></span>' +
+          '<span class="instructor-status-dot" title="' + titleStatus + '"></span>' +
         '</div>' +
         '<div class="instructor-info-text">' +
-          '<span class="instructor-caption">Moniteur</span>' +
+          '<span class="instructor-caption">' + instructorLabel + '</span>' +
           '<span class="instructor-name-display">' + escHtml(name) + '</span>' +
         '</div>' +
       '</div>';
@@ -3063,6 +3066,10 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
         ? '<img src="' + instData.b64 + '" alt="' + escHtml(instName) + '" class="recap-instructor-avatar">'
         : '<div class="instructor-avatar-fallback" style="width:52px; height:52px; font-size:18px;">' + escHtml(instName.charAt(0)) + '</div>';
 
+      var isFemaleInst = instKey.indexOf("imane") !== -1 || instName.toLowerCase().indexOf("imane") !== -1;
+      var roleTitle = isFemaleInst ? "Monitrice Officielle Formatrice" : "Moniteur Officiel Formateur";
+      var certifiedBadge = isFemaleInst ? '<i class="fa-solid fa-circle-check"></i> Enseignante certifiée Success DS' : '<i class="fa-solid fa-circle-check"></i> Enseignant certifié Success DS';
+
       // Parts timeline HTML
       var partsTimelineHtml = state.parts.map(function(part, index) {
         var suffix = index === 0 ? (isEn ? "st" : "ère") : (isEn ? "nd" : "ème");
@@ -3114,9 +3121,9 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
               '<div class="recap-info-box">' +
                 instAvatarHtml +
                 '<div>' +
-                  '<div style="font-size:0.75rem; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:0.04em;">Moniteur Officiel Formateur</div>' +
+                  '<div style="font-size:0.75rem; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:0.04em;">' + roleTitle + '</div>' +
                   '<div style="font-size:1.12rem; font-weight:800; color:#0f172a; margin-top:2px;">' + escHtml(instName) + '</div>' +
-                  '<div style="font-size:0.8rem; font-weight:600; color:#059669; margin-top:3px;"><i class="fa-solid fa-circle-check"></i> Enseignant certifié Success DS</div>' +
+                  '<div style="font-size:0.8rem; font-weight:600; color:#059669; margin-top:3px;">' + certifiedBadge + '</div>' +
                 '</div>' +
               '</div>' +
 
