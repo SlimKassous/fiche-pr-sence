@@ -1107,66 +1107,90 @@
     }
     .card-part-line {
       display: grid;
-      grid-template-columns: 104px 1fr auto;
+      grid-template-columns: 58px minmax(0, 1fr) auto;
       align-items: center;
-      gap: 12px;
-      padding: 6px 10px;
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(226, 232, 240, 0.7);
-      border-radius: 10px;
+      gap: 10px;
+      padding: 8px 9px;
+      background: #ffffff;
+      border: 1px solid #eeeaf6;
+      border-radius: 13px;
       transition: all 0.18s ease;
     }
     .card-part-line:hover {
-      background: #ffffff;
-      border-color: rgba(147, 51, 234, 0.3);
-      transform: translateX(2px);
-    }
-      padding: 2px 0;
+      border-color: rgba(147, 51, 234, 0.35);
+      box-shadow: 0 5px 14px rgba(147, 51, 234, 0.08);
+      transform: translateY(-1px);
     }
     .card-part-num {
-      font-weight: 800;
-      color: #ffffff;
-      background: linear-gradient(135deg, #9333ea 0%, #7e22ce 100%);
-      padding: 4px 10px;
-      border-radius: 7px;
-      font-size: 0.82rem;
-      text-align: center;
-      display: inline-flex;
+      display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      white-space: nowrap;
-      box-shadow: 0 2px 6px rgba(147, 51, 234, 0.25);
+      gap: 1px;
+      min-height: 42px;
+      color: #7e22ce;
+      background: #f3eaff;
+      border: 1px solid #e9d5ff;
+      border-radius: 10px;
+      font-size: 0.66rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+    .card-part-num strong {
+      font-size: 1.05rem;
+      letter-spacing: 0;
+      line-height: 1;
     }
     .card-part-date {
-      font-weight: 800;
-      color: var(--slate-900);
-      font-size: 0.95rem;
-      display: inline-flex;
+      min-width: 0;
+      display: flex;
       align-items: center;
-      gap: 6px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      gap: 8px;
+      color: var(--slate-900);
     }
     .card-part-date i {
       color: var(--primary);
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       flex-shrink: 0;
     }
-    .card-part-hours {
-      color: #0f172a;
+    .card-part-date-text {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      line-height: 1.15;
+    }
+    .card-part-day {
       font-weight: 800;
-      font-size: 0.92rem;
+      font-size: 0.91rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .card-part-date-value {
+      color: var(--slate-500);
+      font-size: 0.76rem;
+      font-weight: 700;
+      margin-top: 3px;
+    }
+    .card-part-hours {
       display: inline-flex;
       align-items: center;
-      justify-content: flex-end;
-      gap: 6px;
+      justify-content: center;
+      gap: 5px;
+      padding: 7px 9px;
+      color: #334155;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 9px;
+      font-size: 0.78rem;
+      font-weight: 800;
       white-space: nowrap;
     }
     .card-part-hours i {
-      color: #f43f5e;
-      font-size: 0.88rem;
+      color: var(--primary);
+      font-size: 0.78rem;
     }
 
     /* STRICT HORIZONTAL BASELINE FOOTER WITH INSTRUCTOR PHOTO */
@@ -2059,6 +2083,15 @@
       .card-part-line {
         grid-template-columns: minmax(0, 1fr);
         gap: 6px;
+      }
+
+      .card-part-line {
+        grid-template-columns: 52px minmax(0, 1fr);
+      }
+
+      .card-part-hours {
+        grid-column: 2;
+        justify-self: start;
       }
 
       .stepper-track {
@@ -3770,9 +3803,9 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
           var dateReadable = dayText + ' ' + (p.dayNum || '') + ' ' + monthText;
 
           return '<div class="card-part-line">' +
-            '<span class="card-part-num">' + partTitle + '</span>' +
-            '<span class="card-part-date"><i class="fa-regular fa-calendar" style="color:var(--slate-400); margin-right:4px;"></i>' + escHtml(dateReadable) + '</span>' +
-            '<span class="card-part-hours"><i class="fa-regular fa-clock" style="color:var(--primary); font-size:11px;"></i> ' + p.startTime + ' – ' + p.endTime + '</span>' +
+            '<span class="card-part-num"><strong>' + (pIdx + 1) + '</strong><span>' + (isEn ? 'part' : 'partie') + '</span></span>' +
+            '<span class="card-part-date"><i class="fa-regular fa-calendar"></i><span class="card-part-date-text"><span class="card-part-day">' + escHtml(dayText) + '</span><span class="card-part-date-value">' + escHtml((p.dayNum || '') + ' ' + monthText) + '</span></span></span>' +
+            '<span class="card-part-hours"><i class="fa-regular fa-clock"></i>' + p.startTime + ' – ' + p.endTime + '</span>' +
           '</div>';
         }).join('');
 
