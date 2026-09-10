@@ -3116,20 +3116,28 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       deploymentVersionCheckInProgress = true;
 
       fetch('./deploy-version.json?ts=' + Date.now(), { cache: 'no-store' })
-        .then(function(response) { return response.ok ? response.json() : null; })
-        .then(function(data) {
-          if (!data || !data.version) return;
+        .then(function(response) {
+          if (response.ok) return response.json().then(function(data) { return data.version; });
+          return fetch('https://api.github.com/repos/SlimKassous/fiche-pr-sence/commits/main?ts=' + Date.now(), {
+            cache: 'no-store',
+            headers: { 'Accept': 'application/vnd.github+json' }
+          }).then(function(apiResponse) {
+            return apiResponse.ok ? apiResponse.json().then(function(data) { return data.sha; }) : null;
+          });
+        })
+        .then(function(version) {
+          if (!version) return;
 
           var currentVersion = null;
           try { currentVersion = localStorage.getItem(DEPLOYMENT_VERSION_KEY); } catch (e) {}
 
           if (!currentVersion) {
-            try { localStorage.setItem(DEPLOYMENT_VERSION_KEY, data.version); } catch (e) {}
+            try { localStorage.setItem(DEPLOYMENT_VERSION_KEY, version); } catch (e) {}
             return;
           }
 
-          if (currentVersion !== data.version) {
-            try { localStorage.setItem(DEPLOYMENT_VERSION_KEY, data.version); } catch (e) {}
+          if (currentVersion !== version) {
+            try { localStorage.setItem(DEPLOYMENT_VERSION_KEY, version); } catch (e) {}
             window.location.reload();
           }
         })
@@ -4781,7 +4789,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       document.addEventListener('visibilitychange', refreshSessionsAfterCleanup);
       window.addEventListener('focus', refreshSessionsAfterCleanup);
       checkForNewDeployment();
-      window.setInterval(checkForNewDeployment, 30000);
+      window.setInterval(checkForNewDeployment, 60000);
     });
   </script>
   </div>
