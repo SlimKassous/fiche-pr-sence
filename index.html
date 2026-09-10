@@ -3723,19 +3723,6 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
           langBadge = '<span class="badge badge-rose" style="gap:5px;">' + SVG_SWISS_FLAG + ' FR</span>';
         }
 
-        // Real number of available places from success-ds.ch
-        var availBadge = '';
-        if (s.avail) {
-          var avLower = s.avail.toLowerCase();
-          if (avLower.includes('complet')) {
-            availBadge = '<span class="badge badge-rose" style="font-weight:700;"><i class="fa-solid fa-circle-xmark"></i> Complet</span>';
-          } else if (avLower.includes('plus que')) {
-            availBadge = '<span class="badge badge-amber" style="font-weight:700;"><i class="fa-solid fa-fire"></i> ' + escHtml(s.avail) + '</span>';
-          } else {
-            availBadge = '<span class="badge badge-emerald" style="font-weight:700;"><i class="fa-solid fa-circle-check"></i> ' + escHtml(s.avail) + '</span>';
-          }
-        }
-
         var partsCountLabel = s.parts.length + ' ' + (isEn ? 'parts' : (s.parts.length > 1 ? 'parties' : 'partie'));
 
         // Parts timeline redaction (Rédaction soignée des parties)
@@ -3757,7 +3744,6 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
             '<span class="card-title-text">' + escHtml(cleanSessionTitle(s.title)) + '</span>' +
             '<div class="card-badges-row">' +
               langBadge +
-              availBadge +
               '<span class="badge badge-purple">' + partsCountLabel + '</span>' +
             '</div>' +
           '</div>' +
