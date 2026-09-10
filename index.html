@@ -4372,7 +4372,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       }
     }
 
-    function drawFooters(doc, generatedAt, flagDU) {
+    function drawFooters(doc, generatedAt) {
       var pc = doc.internal.getNumberOfPages();
       var pw = doc.internal.pageSize.getWidth();
       var ph = doc.internal.pageSize.getHeight();
@@ -4382,11 +4382,6 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
         doc.setDrawColor(DARK[0], DARK[1], DARK[2]);
         doc.setLineWidth(0.25);
         doc.line(PAGE_MARGIN, top, pw - PAGE_MARGIN, top);
-        if (flagDU) {
-          try {
-            doc.addImage(flagDU, "PNG", PAGE_MARGIN, top + 2, 3, 3);
-          } catch(e) {}
-        }
         doc.setFont("helvetica", "bold");
         doc.setFontSize(6);
         doc.setTextColor(DARK[0], DARK[1], DARK[2]);
@@ -4680,13 +4675,13 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
         }
       });
 
-      // 7. Pied de page avec Drapeau Suisse et Signature Success Driving School Geneva (Toujours en Français)
+      // 7. Pied de page avec signature Success Driving School Geneva
       var generatedAt = new Intl.DateTimeFormat("fr-CH", {
         day: "2-digit", month: "2-digit", year: "numeric",
         hour: "2-digit", minute: "2-digit", timeZone: "Europe/Zurich"
       }).format(new Date());
 
-      drawFooters(doc, generatedAt, FLAG_CH_B64);
+      drawFooters(doc, generatedAt);
 
       return doc;
     }
