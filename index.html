@@ -3108,6 +3108,35 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       }
     }
 
+    var DEPLOYMENT_VERSION_KEY = 'success_ds_presence_deployment_version';
+    var deploymentVersionCheckInProgress = false;
+
+    function checkForNewDeployment() {
+      if (deploymentVersionCheckInProgress) return;
+      deploymentVersionCheckInProgress = true;
+
+      fetch('./deploy-version.json?ts=' + Date.now(), { cache: 'no-store' })
+        .then(function(response) { return response.ok ? response.json() : null; })
+        .then(function(data) {
+          if (!data || !data.version) return;
+
+          var currentVersion = null;
+          try { currentVersion = localStorage.getItem(DEPLOYMENT_VERSION_KEY); } catch (e) {}
+
+          if (!currentVersion) {
+            try { localStorage.setItem(DEPLOYMENT_VERSION_KEY, data.version); } catch (e) {}
+            return;
+          }
+
+          if (currentVersion !== data.version) {
+            try { localStorage.setItem(DEPLOYMENT_VERSION_KEY, data.version); } catch (e) {}
+            window.location.reload();
+          }
+        })
+        .catch(function() {})
+        .then(function() { deploymentVersionCheckInProgress = false; });
+    }
+
     function getWeekRange(d) {
       var date = new Date(d);
       var day = date.getDay();
@@ -4751,6 +4780,8 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       window.setInterval(refreshSessionsAfterCleanup, 30000);
       document.addEventListener('visibilitychange', refreshSessionsAfterCleanup);
       window.addEventListener('focus', refreshSessionsAfterCleanup);
+      checkForNewDeployment();
+      window.setInterval(checkForNewDeployment, 30000);
     });
   </script>
   </div>
