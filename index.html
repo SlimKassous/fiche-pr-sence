@@ -666,11 +666,12 @@
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
       border-radius: calc(var(--mac-card-radius) - 2.5px);
-      padding: 20px 18px;
+      padding: 16px 18px;
       height: 100%;
       display: flex;
-      flex-direction: column;
-      gap: 12px;
+      flex-direction: row;
+      align-items: center;
+      gap: 14px;
       transition: all 0.3s ease;
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95);
     }
@@ -739,6 +740,7 @@
     .course-icon-wrap {
       width: 48px;
       height: 48px;
+      min-width: 48px;
       border-radius: 14px;
       display: flex;
       align-items: center;
@@ -753,9 +755,22 @@
     .course-name {
       font-weight: 800;
       font-size: 1.05rem;
+      line-height: 1.15;
     }
     .course-detail {
       font-size: 0.82rem;
+    }
+    .course-info {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 5px;
+    }
+    .course-info .badge {
+      padding: 4px 10px;
+      font-size: 0.72rem;
+      letter-spacing: 0.03em;
     }
 
     /* ── SESSIONS BOX (MACOS DESKTOP WINDOW CONTAINER) ──── */
@@ -1277,23 +1292,35 @@
     }
 
     .card-cta-btn {
-      padding: 8px 16px;
-      border-radius: 20px;
-      background: linear-gradient(135deg, #9333ea 0%, #7928ca 100%);
-      color: #ffffff;
+      padding: 9px 13px 9px 15px;
+      border-radius: 12px;
+      background: #ffffff;
+      border: 1px solid #d8b4fe;
+      color: #7e22ce;
       font-weight: 800;
       font-size: 0.82rem;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      border: none;
-      box-shadow: 0 3px 10px rgba(147, 51, 234, 0.3);
+      box-shadow: 0 4px 12px rgba(147, 51, 234, 0.12);
       transition: all 0.2s ease;
       flex-shrink: 0;
     }
+    .card-cta-btn i {
+      width: 22px;
+      height: 22px;
+      border-radius: 7px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%);
+      font-size: 0.68rem;
+    }
     .wp-session-card:hover .card-cta-btn {
       transform: translateX(3px);
-      box-shadow: 0 5px 14px rgba(147, 51, 234, 0.45);
+      border-color: #a855f7;
+      box-shadow: 0 6px 16px rgba(147, 51, 234, 0.2);
     }
 
     /* CONFIG BAR */
@@ -2400,7 +2427,6 @@
               <i class="fa-solid fa-motorcycle"></i>
             </div>
             <div class="course-info">
-              <div class="badge badge-cyan">12 Heures</div>
               <div class="course-name" id="cTitleMoto12">Cours Moto 12h</div>
             </div>
           </div>
@@ -2412,7 +2438,6 @@
               <i class="fa-solid fa-motorcycle"></i>
             </div>
             <div class="course-info">
-              <div class="badge badge-amber">4 Heures</div>
               <div class="course-name" id="cTitleMoto4">Cours Moto 4h</div>
             </div>
           </div>
