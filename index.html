@@ -3100,8 +3100,12 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
 
     function refreshSessionsAfterCleanup() {
       if (!removeExpiredSessions()) return;
-      if (isCurrentWeekView || !selectedCourseKey) showCurrentWeekSessions();
-      else selectCoursePreset(selectedCourseKey, null);
+
+      // Ne pas remplacer la fiche active pendant la saisie des étapes 2 et 3.
+      if (currentStep === 1) {
+        if (isCurrentWeekView || !selectedCourseKey) showCurrentWeekSessions();
+        else selectCoursePreset(selectedCourseKey, null);
+      }
     }
 
     function getWeekRange(d) {
@@ -3315,6 +3319,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
 
       if (n === 2) renderSessionParts();
       if (n === 3) renderStudentsTable();
+      if (n === 1) refreshSessionsAfterCleanup();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -4758,6 +4763,8 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       renderStudentsTable();
       goToStep(1);
       window.setInterval(refreshSessionsAfterCleanup, 30000);
+      document.addEventListener('visibilitychange', refreshSessionsAfterCleanup);
+      window.addEventListener('focus', refreshSessionsAfterCleanup);
     });
   </script>
   </div>
