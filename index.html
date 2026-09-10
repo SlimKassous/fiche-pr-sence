@@ -1241,16 +1241,21 @@
       border: 2px solid #ffffff;
       box-shadow: 0 3px 8px rgba(147, 51, 234, 0.2);
     }
-    .instructor-status-dot {
+    .instructor-credential-badge {
       position: absolute;
-      bottom: 0px;
-      right: 0px;
-      width: 12px;
-      height: 12px;
-      background: #10b981;
+      bottom: -2px;
+      right: -2px;
+      width: 18px;
+      height: 18px;
+      background: #f59e0b;
+      color: #ffffff;
       border-radius: 50%;
       border: 2px solid #ffffff;
-      box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+      box-shadow: 0 2px 5px rgba(245, 158, 11, 0.35);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
     }
     .instructor-info-text {
       display: flex;
@@ -3720,7 +3725,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       var nameLower = name.toLowerCase();
       var isFemale = nameLower.indexOf("imane") !== -1;
       var instructorLabel = isFemale ? "Monitrice" : "Moniteur";
-      var titleStatus = isFemale ? "Monitrice officielle Success Driving School" : "Moniteur officiel Success Driving School";
+      var titleStatus = isFemale ? "Monitrice certifiée Success Driving School" : "Moniteur certifié Success Driving School";
 
       var photoB64 = null;
       if (nameLower.indexOf("nabil") !== -1) photoB64 = INSTRUCTOR_PORTRAITS.nabil.b64;
@@ -3750,7 +3755,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       return '<div class="instructor-profile-group">' +
         '<div class="instructor-avatar-wrap">' +
           avatarInner +
-          '<span class="instructor-status-dot" title="' + titleStatus + '"></span>' +
+          '<span class="instructor-credential-badge" title="' + titleStatus + '"><i class="fa-solid fa-award"></i></span>' +
         '</div>' +
         '<div class="instructor-info-text">' +
           '<span class="instructor-caption">' + instructorLabel + '</span>' +
