@@ -3071,6 +3071,39 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       return null;
     }
 
+    function getSessionStartDate(session) {
+      var firstPart = session && session.parts && session.parts[0];
+      if (!firstPart || !firstPart.date || !/^\d{1,2}:\d{2}$/.test(String(firstPart.startTime || ""))) return null;
+
+      var date = parsePartDate(firstPart.date);
+      if (!date) return null;
+
+      var timeParts = String(firstPart.startTime).split(":");
+      var hours = parseInt(timeParts[0], 10);
+      var minutes = parseInt(timeParts[1], 10);
+      if (isNaN(hours) || isNaN(minutes) || hours > 23 || minutes > 59) return null;
+
+      date.setHours(hours, minutes, 0, 0);
+      return date;
+    }
+
+    function removeExpiredSessions() {
+      var now = new Date();
+      var activeSessions = WP_SESSIONS.filter(function(session) {
+        var startDate = getSessionStartDate(session);
+        return !startDate || now < startDate;
+      });
+      var removed = activeSessions.length !== WP_SESSIONS.length;
+      WP_SESSIONS = activeSessions;
+      return removed;
+    }
+
+    function refreshSessionsAfterCleanup() {
+      if (!removeExpiredSessions()) return;
+      if (isCurrentWeekView || !selectedCourseKey) showCurrentWeekSessions();
+      else selectCoursePreset(selectedCourseKey, null);
+    }
+
     function getWeekRange(d) {
       var date = new Date(d);
       var day = date.getDay();
@@ -3088,6 +3121,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     var weekTypeFilter = 'all'; // 'all', 'sensi', 'secours', 'moto12', 'moto4', 'theorie'
 
     function getCurrentWeekAllSessions() {
+      removeExpiredSessions();
       var now = new Date();
       var range = getWeekRange(now);
 
@@ -3534,6 +3568,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
 
     function renderFilteredSessionsForCourse(key) {
       var isEn = state.flagCode === "GB";
+      removeExpiredSessions();
 
       // 1. Filtrer par type de cours
       var matching = WP_SESSIONS.filter(function(s) {
@@ -4076,6 +4111,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     }
 
     function filterAllModalSessions() {
+      removeExpiredSessions();
       var typeFilter = document.getElementById('modalFilterType').value;
       var agencyFilter = document.getElementById('modalFilterAgency').value;
       var list = document.getElementById('allSessionsModalList');
@@ -4721,6 +4757,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       showCurrentWeekSessions();
       renderStudentsTable();
       goToStep(1);
+      window.setInterval(refreshSessionsAfterCleanup, 30000);
     });
   </script>
   </div>
